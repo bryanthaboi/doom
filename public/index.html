@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Vercel Doom By BRYANTHABOI</title>
+
+		<style>
+			/*
+        ******************************************************************
+        *            github.com/bryanthaboi                              *
+ ______     ______     __  __     ______     __   __     ______   __  __     ______     ______     ______     __    
+/\  == \   /\  == \   /\ \_\ \   /\  __ \   /\ "-.\ \   /\__  _\ /\ \_\ \   /\  __ \   /\  == \   /\  __ \   /\ \   
+\ \  __<   \ \  __<   \ \____ \  \ \  __ \  \ \ \-.  \  \/_/\ \/ \ \  __ \  \ \  __ \  \ \  __<   \ \ \/\ \  \ \ \  
+ \ \_____\  \ \_\ \_\  \/\_____\  \ \_\ \_\  \ \_\\"\_\    \ \_\  \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_____\  \ \_\ 
+  \/_____/   \/_/ /_/   \/_____/   \/_/\/_/   \/_/ \/_/     \/_/   \/_/\/_/   \/_/\/_/   \/_____/   \/_____/   \/_/ 
+
+		*             dos doom provided by archive.org                   *
+        *                                                                *
+        ******************************************************************
+        */
+			html,
+			body {
+				height: 100%;
+				margin: 0;
+				background-color: black !important;
+				text-align: center;
+			}
+			#dos {
+				width: 800px;
+				height: 600px;
+				position: relative;
+				overflow: hidden;
+				transform-origin: top left;
+				margin: 0 auto;
+			}
+			.sidebar {
+				display: none !important;
+			}
+			.w-12.flex-shrink-0 {
+				display: none;
+			}
+			@keyframes pan-overlay {
+				from {
+					background-position: 0% 0%;
+				}
+				to {
+					background-position: 0% -100%;
+				}
+			}
+			div#overlay::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				background: linear-gradient(
+					transparent,
+					transparent 2px,
+					rgba(0, 0, 0, 0.5) 2px,
+					rgba(0, 0, 0, 0.3) 3px
+				);
+				background-size: 100% 3px;
+				z-index: 2;
+				animation: pan-overlay 22s infinite linear;
+			}
+			div#overlay {
+				height: 100vh;
+				background-image: url("scan.png");
+				color: white;
+				text-shadow: 0 0 5px white;
+				font: 1.3rem Tahoma;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				z-index: 99;
+			}
+			@keyframes scanline {
+				0.01% {
+					height: 0;
+				}
+				99.99% {
+					height: 100%;
+				}
+				100% {
+					height: 0;
+				}
+			}
+			.scanline {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(255, 255, 255, 0.02);
+				animation: scanline 8s linear infinite;
+				pointer-events: none;
+				z-index: 100;
+			}
+		</style>
+		<link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css" />
+		<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+	</head>
+	<body>
+		<div id="dos">
+			<div></div>
+			<div class="scanline"></div>
+			<div id="overlay"></div>
+		</div>
+		<script>
+			function scaleDosContainer() {
+				const dosContainer = document.getElementById("dos");
+				const dosCanvas = document.querySelector("canvas");
+
+				if (!dosCanvas) {
+					console.log("No canvas element found.");
+					return;
+				}
+
+				const windowAspect = window.innerWidth / window.innerHeight;
+				const dosAspect = 800 / 600;
+
+				let scale;
+				if (windowAspect < dosAspect) {
+					scale = window.innerWidth / 800;
+				} else {
+					scale = window.innerHeight / 600;
+				}
+
+				const scaledWidth = 800 * scale;
+				const scaledHeight = 600 * scale;
+
+				dosCanvas.style.width = `${scaledWidth}px`;
+				dosCanvas.style.height = `${scaledHeight}px`;
+
+				dosContainer.style.width = `${scaledWidth}px`;
+				dosContainer.style.height = `${scaledHeight}px`;
+
+				const context = dosCanvas.getContext("2d");
+				if (context) {
+					context.scale(scale, scale);
+				}
+			}
+
+			window.addEventListener("DOMContentLoaded", (event) => {
+				Dos(document.getElementById("dos"), {
+					url: "/bun.jsdos",
+					autoStart: true,
+					kioks: true,
+					renderAspect: "4/3",
+				});
+				setTimeout(function () {
+					scaleDosContainer();
+				}, 2500);
+			});
+
+			window.addEventListener("resize", scaleDosContainer);
+		</script>
+	</body>
+</html>
